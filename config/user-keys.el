@@ -34,16 +34,16 @@
    ("f"
     ("t" "Turn Treemacs on/off" treemacs)
     ("T" "Focus current file in file tree" treemacs-find-file))
-   ("o"
-    ("r"
+   ("o" "org-mode"
+    ("r" "org-roam"
      ("l" "Roam buffer toggle" org-roam-buffer-toggle)
      ("i" "Roam node insert" org-roam-node-insert)
      ("f" "Roam node find" org-roam-node-find)
-     ("d"
-      ("g"
+     ("d" "org-roam-dailies"
+      ("g" "Roam goto"
        ("t" "Roam dailies goto today" org-roam-dailies-goto-today)
        ("c" "Roam dailies goto date" org-roam-dailies-goto-date))
-      ("c"
+      ("c" "Roam capture"
        ("t" "Roam dailies capture today" org-roam-dailies-capture-today)
        ("c" "Roam dailies capture date" org-roam-dailies-capture-date)))))
 
