@@ -185,12 +185,9 @@
 
 ;; We like this theme because it looks nice and works well enough in terminals,
 ;; swap it out with whatever suits you.
-;; (use-package color-theme-sanityinc-tomorrow
-;;   :config
-;;   (load-theme 'sanityinc-tomorrow-bright t))
-(use-package cherry-blossom-theme
+(use-package color-theme-sanityinc-tomorrow
   :config
-  (load-theme 'cherry-blossom t))
+  (load-theme 'sanityinc-tomorrow-bright t))
 
 ;; Maybe set a nice font to go with it
 ;; (set-frame-font "Iosevka Fixed SS14-14")
