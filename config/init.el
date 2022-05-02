@@ -69,7 +69,85 @@
 (use-package magit)
 
 ;; Language-specific packages
-(use-package org)
+(use-package org
+  :config
+  (setq org-directory "~/org/")
+  (setq org-id-link-to-org-use-id 'use-existing)
+  (setq org-log-done t)
+  (setq org-capture-templates
+        `(("p" "Protocol" entry (file+headline ,(concat org-directory "/notes.org") "Inbox")
+           "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?"
+           :empty-lines-before 1)
+          ("L" "Protocol Link" entry (file+headline ,(concat org-directory "/notes.org") "Inbox")
+           "* [[%:link][%:description]] \nCaptured On: %U\n\n%?"
+           :empty-lines-before 1)))
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "WIP(w)" "BLOCKED(b)" "|" "DONE(d)" "CANCELLED(c)")
+          (sequence "DELEGATED(g)" "BLOCKED(b)" "|" "DONE(d)" "CANCELLED(c)")
+          (sequence "MAYBE(m)" "|" "CANCELLED(c)")))
+  (setq org-todo-keyword-faces
+        '(("TODO" . (:foreground "DarkOrange1" :weight bold))
+          ("DELEGATED" . (:foreground "DarkOrange1"))
+          ("WIP" . (:foreground "blue" :background "gold" :weight bold))
+          ("BLOCKED" . (:background "dark orange" :foreground "white"))
+          ("MAYBE" . (:foreground "sea green"))
+          ("DONE" . (:foreground "light sea green"))
+          ("CANCELLED" . (:foreground "forest green")))))
+
+(use-package org-roam
+  :after org
+  :init
+  (setq org-roam-v2-ack t)
+  (setq dw/daily-note-filename "%<%Y-%m-%d>.org"
+        dw/daily-note-header "#+title: %<%Y-%m-%d %a>\n\n[[roam:%<%Y-%B>]]\n\n")
+  :custom
+  (org-roam-directory "~/RoamNotes")
+  (org-roam-dailies-directory "daily/")
+  (org-roam-completion-everywhere t)
+  (org-roam-mode-section-functions
+   (list #'org-roam-backlinks-section
+         #'org-roam-reflinks-section
+         #'org-roam-unlinked-references-section))
+
+  ;; initial config
+  (org-roam-dailies-capture-templates
+   '(("d" "default" entry "* %<%H:%M >: %?"
+      :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n")
+      :empty-lines-before 1)))
+
+  (org-roam-capture-templates
+   '(("d" "default" plain "%?"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                         "#+title: ${title}\n#+date: %U\n")
+      :unnarrowed t)
+     ("P" "Project" plain "* Goals\n\n%?\n\n* People\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                         "#+title: ${title}\n#+filetags: Project")
+      :unnarrowed t)))
+  ;; :bind (("C-c n l" . org-roam-buffer-toggle)
+  ;;        ("C-c n f" . org-roam-node-find)
+  ;;        ("C-c n i" . org-roam-node-insert)
+  ;;        :map org-mode-map
+  ;;        ("C-M-i" . completion-at-point)
+  ;;        :map org-roam-dailies-map
+  ;;        ("Y" . org-roam-dailies-capture-yesterday)
+  ;;        ("T" . org-roam-dailies-capture-tomorrow))
+  ;; :bind-keymap
+  ;; ("C-c n d" . org-roam-dailies-map)
+  :config
+  (require 'org-roam-dailies) ;; Ensure the keymap is available
+  (org-roam-db-autosync-mode)
+  (add-to-list 'display-buffer-alist
+               '("\\*org-roam\\*"
+                 (display-buffer-in-direction)
+                 (direction . right)
+                 (window-width . 0.33)
+                 (window-height . fit-window-to-buffer))))
+
+
+(use-package org-protocol
+  :after org)
+
 (use-package markdown-mode)
 (use-package yaml-mode)
 (use-package typescript-mode)
