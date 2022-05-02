@@ -30,6 +30,9 @@
  ;; Bindings for commands are usually only active in normal and visual state.
  (normal|visual
   ("SPC"
+   ("g"
+    ("l" "Magit list repos" magit-list-repositories)
+    ("b" "Give Credit/Blame" blamer-show-commit-info))
    ("0" "Select Treemacs" treemacs-select-window)
    ("f"
     ("t" "Turn Treemacs on/off" treemacs)
